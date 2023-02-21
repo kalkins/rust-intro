@@ -1,0 +1,529 @@
+#+TITLE:     Intro til Rust
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  no
+#+DATE:
+#+OPTIONS:   H:3 num:t toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:https://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+startup: beamer
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+LaTeX_HEADER: \setminted{fontsize=\footnotesize}
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+
+* Intro :ignore:
+** Hva
+*** Hva er Rust?
+** Hvorfor
+*** Hvorfor Rust?
+* Syntaks
+** Variabler
+*** Variabler
+#+NAME: Variabel
+#+BEGIN_SRC rust
+let x: i32 = 5;
+
+
+
+
+
+
+
+
+#+END_SRC
+
+#+RESULTS: Variabel
+
+*** Variabler
+#+NAME: Variabel
+#+BEGIN_SRC rust
+let x: i32 = 5;
+
+let mut y: i32 = 5;
+y += 5;
+
+
+
+
+
+#+END_SRC
+
+*** Variabler
+#+RESULTS: Variabel
+
+#+NAME: Variabel
+#+BEGIN_SRC rust
+let x: i32 = 5;
+
+let mut y: i32 = 5;
+y += 5;
+
+let xref: &i32 = &x;
+
+let yref: &mut i32 = &mut y;
+*yref += 2;
+#+END_SRC
+
+#+RESULTS: Variabel
+
+** Typer
+*** Primitive typer - integer
+#+BEGIN_SRC rust
+let x: u8  = 0; //           0 - 127
+let x: i8  = 0; //        -128 - 255
+let x: u16 = 0; //           0 - 65535
+let x: i16 = 0; //      -32768 - 32767
+let x: u32 = 0; //           0 - 4294967295
+let x: i32 = 0; // -2147483648 - 2147483647
+#+END_SRC
+
+#+RESULTS:
+
+*** Primitive typer - flyttall
+#+BEGIN_SRC rust
+let x: f32 = 17484.1819;
+let x: f64 = 1847547191.18487491719;
+#+END_SRC
+
+#+RESULTS:
+
+*** Primitive typer - strenger
+#+BEGIN_SRC rust
+let static_text: &str = "Hello World";
+
+
+
+
+
+
+
+
+#+END_SRC
+
+#+RESULTS:
+
+*** Primitive typer - strenger
+#+BEGIN_SRC rust
+let static_text: &str = "Hello World";
+
+let dynamic_text: String = "Hello World".to_string();
+
+let text_ref: &String = &dynamic_text;
+
+
+
+
+#+END_SRC
+
+#+RESULTS:
+
+*** Primitive typer - strenger
+#+BEGIN_SRC rust
+let static_text: &str = "Hello World";
+
+let dynamic_text: String = "Hello World".to_string();
+
+let text_ref: &String = &dynamic_text;
+
+let slice: &str = &dynamic_text[3..8];
+
+assert_eq!(slice, "lo Wo");
+#+END_SRC
+
+#+RESULTS:
+
+** Printing
+*** Printing
+#+BEGIN_SRC rust
+println!("Print til skjerm");
+
+let x = 2;
+let y = 7;
+let result = x + y;
+println!("{} + {} = {}", x, y, result);
+
+println!("{x} + {y} = {result}");
+#+END_SRC
+
+#+RESULTS:
+: Print til skjerm
+: 2 + 7 = 9
+: 2 + 7 = 9
+
+** Enum
+*** Enum
+#+BEGIN_SRC rust
+enum Action {
+    Move { x: u32, y: u32 },
+    Wait,
+}
+
+let action = Action::Move { x: 5, y: 1 };
+#+END_SRC
+
+#+RESULTS:
+
+*** Match statement
+#+BEGIN_SRC rust
+let action: Action = player.get_user_action();
+
+match action {
+    Move(x, y) => {
+        board[x, y] = player;
+        advance_turn();
+    }
+    Wait => advance_turn(),
+}
+#+END_SRC
+
+#+RESULTS:
+: error: Could not compile `cargoHYiCf9`.
+
+*** Option
+#+BEGIN_SRC rust
+let x: Option<i32> = parse_int("5");
+
+match x {
+    Some(value) => println!("{value}"),
+    None => println!("Not a number"),
+}
+#+END_SRC
+
+*** Result
+#+BEGIN_SRC rust
+let x: Result<String, i32> = fetch_url("google.com");
+
+match x {
+    Ok(response) => println!("{response}"),
+    Err(error_code) => {
+        println!("Failed with error {error_code}")
+    }
+}
+#+END_SRC
+
+#+RESULTS:
+: error: Could not compile `cargosvkjSd`.
+
+** Collections
+*** Lister
+#+BEGIN_SRC rust
+let strings: Vec<&str> = vec!["one", "two", "three"];
+println!("{}", strings[1]);
+
+let mut ints: Vec<i32> = Vec::new();
+ints.push(4);
+ints.push(9);
+ints.push(2);
+#+END_SRC
+
+#+RESULTS:
+: two
+
+** Funksjoner
+*** Funksjoner
+#+BEGIN_SRC rust
+fn add_two(x: i32) -> i32 {
+    x + 2
+}
+
+fn is_even(x: &i32) -> bool {
+    if x % 2 == 0 {
+        true
+    } else {
+        false
+    }
+}
+
+add_two(5);
+is_even(&9);
+#+END_SRC
+
+#+RESULTS:
+
+** Structs og traits
+*** Structs
+#+NAME: player_struct
+#+BEGIN_SRC rust
+struct Player {
+    pub health: u8,
+    pub position: (u8, u8),
+    inventory: Vec<String>,
+}
+
+#+END_SRC
+
+#+BEGIN_SRC rust :include '(player_struct)
+let health = 100;
+let start_position = (0, 0);
+
+let player = Player {
+    health,
+    position: start_position,
+    inventory: vec![]
+};
+#+END_SRC
+
+#+RESULTS:
+
+*** Methods
+#+NAME: player_impl
+#+BEGIN_SRC rust :include '(player_struct)
+impl Player {
+    fn new() -> Player {
+        Player {
+            health: 100,
+            position: (0, 0),
+            inventory: vec![],
+        }
+    }
+
+    fn get_health(&self) -> u8 {
+        self.health
+    }
+
+    fn take_damage(&mut self, damage: u8) {
+        self.health -= damage
+    }
+}
+#+END_SRC
+
+#+RESULTS:
+
+*** Traits
+#+BEGIN_SRC rust :include '(player_struct)
+trait Movable {
+    fn move_to(&mut self, x: u8, y: u8);
+}
+
+impl Movable for Player {
+    fn move_to(&mut self, x: u8, y: u8) {
+        self.position = (x, y)
+    }
+}
+#+END_SRC
+
+#+RESULTS:
+
+** Ownership
+*** Ownership
+#+BEGIN_SRC rust :include '(player_struct player_impl)
+let player = Player::new();
+let player2 = player;
+
+println!("{}", player.health);
+#+END_SRC
+
+#+RESULTS:
+: 5
+
+*** Ownership
+#+BEGIN_SRC rust :include '(player_struct player_impl)
+fn mystery(player: Player) {
+    ...
+}
+
+let player = Player::new();
+mystery(player);
+
+println!("{}", player.health);
+#+END_SRC
+
+#+RESULTS:
+: 5
+
+*** Ownership
+#+NAME: player_copyable
+#+BEGIN_SRC rust
+#[derive(Clone)]
+struct Player {
+    pub health: u8,
+    pub position: (u8, u8),
+    inventory: Vec<String>,
+}
+#+END_SRC
+
+#+RESULTS: player_copyable
+
+#+BEGIN_SRC rust :include '(player_copyable player_impl)
+let player = Player::new();
+let player2 = player.clone();
+
+println!("{}", player.health);
+#+END_SRC
+
+#+RESULTS:
+: 100
+
+*** Borrowing
+#+BEGIN_SRC rust
+let mut x = 5;
+let xref = &x;
+let xmutref = &mut x;
+
+println!("{xref}");
+#+END_SRC
+
+#+RESULTS:
+: error: Could not compile `cargoJKDS1V`.
+
+*** Borrowing
+#+BEGIN_SRC rust
+let mut x = 5;
+
+if x == 7 {
+    let xmutref = &mut x;
+}
+
+let xref = &x;
+#+END_SRC
+
+#+RESULTS:
+: error: Could not compile `cargoJKDS1V`.
+
+** Generics
+*** Generics
+#+BEGIN_SRC rust
+fn last<T>(list: &mut Vec<T>) -> Option<T> {
+    list.pop()
+}
+#+END_SRC
+
+#+RESULTS:
+
+*** Generics
+#+BEGIN_SRC rust
+use std::ops::Add;
+
+fn plus<T: Add>(a: T, b: T) -> T::Output {
+    a + b
+}
+#+END_SRC
+
+#+RESULTS:
+
+*** Generics
+#+BEGIN_SRC rust
+use std::ops::Add;
+use std::ops::Mul;
+
+fn plus_multiply<A, B, C>(a: A, b: B, c: C) -> A::Output
+    where A: Add<B::Output>,
+          B: Mul<C>,
+{
+    a + (b * c)
+}
+
+#+END_SRC
+
+#+RESULTS:
+
+*** Lifetimes
+#+NAME: lifetime_max
+#+BEGIN_SRC rust
+fn max(first: &i32, second: &i32) -> &i32 {
+    if first >= second {
+        first
+    } else {
+        second
+    }
+}
+#+END_SRC
+
+*** Lifetimes
+#+BEGIN_SRC rust :include '(lifetime_max)
+let mut largest: &i32 = &0;
+
+if something {
+    let x = fetch();
+    let y = fetch();
+    largest = max(&x, &y);
+}
+
+do_something(largest);
+#+END_SRC
+
+#+RESULTS:
+: error: Could not compile `cargonze0bF`.
+
+*** Lifetimes
+#+BEGIN_SRC rust
+fn max<'a>(first: &'a i32, second: &'a i32) -> &'a i32 {
+    if first >= second {
+        first
+    } else {
+        second
+    }
+}
+#+END_SRC
+
+#+RESULTS:
+
+** Iterators
+*** Iterators
+#+BEGIN_SRC rust
+let list = vec![1, 2, 3];
+
+for x in &list {
+    println!("{}", x);
+}
+
+list.iter().for_each(|x| {
+    println!("{}", x);
+});
+
+list.into_iter().for_each(|x| {
+    println!("{}", x);
+});
+#+END_SRC
+
+#+RESULTS:
+: 1
+: 2
+: 3
+: 1
+: 2
+: 3
+: 1
+: 2
+: 3
+
+*** Iterators - chaining
+#+BEGIN_SRC rust
+use std::collections::HashMap;
+
+let map: HashMap<i32, i32> = vec![1, 2, 3, 4].into_iter()
+    .filter(|x| {
+        x % 2 == 0
+    }).map(|x| {
+        (x, x*x)
+    }).collect();
+#+END_SRC
+
+#+RESULTS:
+
+* Utviklingsmiljø
+** Installasjon
+*** Installasjon - Rustup
+#+BEGIN_SRC sh
+# https://rutup.rs
+
+rustup toolchain install stable
+#+END_SRC
+** Cargo
+*** Cargo
+#+BEGIN_SRC sh
+cargo new repo
+cd repo
+
+cargo add serde
+cargo run
+cargo test
+
+#+END_SRC
+* Oppgaver
+** Oppgaver
+*** Oppgaver
+https://github.com/kalkins/rust-intro.git
