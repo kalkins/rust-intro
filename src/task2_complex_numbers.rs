@@ -69,7 +69,7 @@ use std::ops::{Add, Mul};
 
 #[cfg(test)]
 mod tests {
-    use crate::task2_complex_numbers::C32;
+    use crate::task2_complex_numbers::*;
 
     #[test]
     fn test_task2_1_exists() {
